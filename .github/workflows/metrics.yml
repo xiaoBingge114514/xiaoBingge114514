@@ -35,6 +35,6 @@ jobs:
           plugin_steam_achievements_limit: 2
           plugin_steam_games_limit: 5
           plugin_steam_games_ignored: 431960,2073850,2538150,730
-          plugin_steam_playtime_threshold: 150
+          plugin_steam_playtime_threshold: 50
           plugin_steam_recent_games_limit: 5
           plugin_steam_sections: player, most-played, recently-played
