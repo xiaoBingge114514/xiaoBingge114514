@@ -1,4 +1,4 @@
-# Visit https://github.com/lowlighter/metrics#-documentation for full reference
+# Visit https://github.com/lowlighter/metrics#-documentation  for full reference
 name: Metrics
 on:
   # Schedule updates (each hour)
@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
   push: {branches: ["master", "main"]}
 jobs:
+  # GitHub 基础统计
   github-metrics:
     runs-on: ubuntu-latest
     permissions:
@@ -14,29 +15,19 @@ jobs:
     steps:
       - uses: lowlighter/metrics@latest
         with:
-          # Your GitHub token
-          # The following scopes are required:
-          #  - public_access (default scope)
-          # The following additional scopes may be required:
-          #  - read:org      (for organization related metrics)
-          #  - read:user     (for user related data)
-          #  - read:packages (for some packages related data)
-          #  - repo          (optional, if you want to include private repositories)
           token: ${{ secrets.METRICS_TOKEN }}
-
-          # Options
           user: xiaoBingge114514
           template: classic
           base: header, activity, community, repositories, metadata
           config_display: large
           config_timezone: Asia/Shanghai
-          plugin_discussions: yes
-          plugin_discussions_categories: yes
-          plugin_introduction: yes
-          plugin_introduction_title: yes
-          plugin_isocalendar: yes
+          plugin_discussions: yes 
+          plugin_discussions_categories: yes 
+          plugin_introduction: yes 
+          plugin_introduction_title: yes 
+          plugin_isocalendar: yes 
           plugin_isocalendar_duration: half-year
-          plugin_languages: yes
+          plugin_languages: yes 
           plugin_languages_analysis_timeout: 15
           plugin_languages_analysis_timeout_repositories: 7.5
           plugin_languages_categories: markup, programming
@@ -47,10 +38,37 @@ jobs:
           plugin_languages_recent_load: 300
           plugin_languages_sections: most-used
           plugin_languages_threshold: 0%
+
+  # Steam 详细游戏历史
+  steam-full:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Profile and detailed game history
+        uses: lowlighter/metrics@latest
+        with:
+          filename: metrics.plugin.steam.full.svg
+          token: NOT_NEEDED
+          base: ""
+          plugin_steam_token: ${{ secrets.STEAM_TOKEN }}
           plugin_steam: yes
-          plugin_steam_achievements_limit: 5
-          plugin_steam_games_limit: 5
-          plugin_steam_playtime_threshold: 100
-          plugin_steam_recent_games_limit: 3
-          plugin_steam_sections: player, most-played, recently-played
           plugin_steam_user: 76561198845673477
+
+  # Steam 最近游玩
+  steam-recent:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Recently played games
+        uses: lowlighter/metrics@latest
+        with:
+          filename: metrics.plugin.steam.svg
+          token: NOT_NEEDED
+          base: ""
+          plugin_steam_token: ${{ secrets.STEAM_TOKEN }}
+          plugin_steam: yes
+          plugin_steam_user: 76561198845673477
+          plugin_steam_sections: recently-played
+          plugin_steam_achievements_limit: 0
