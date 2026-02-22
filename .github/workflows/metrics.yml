@@ -1,33 +1,19 @@
 name: Metrics
 on:
-  # 每小时自动更新
-  schedule: [{cron: "0 * * * *"}]
-  # 允许手动触发
+  # Schedule daily updates
+  schedule: [{cron: "0 0 * * *"}]
+  # (optional) Run workflow manually
   workflow_dispatch:
-  # 推送到 main/master 分支时触发
+  # (optional) Run workflow when pushing on master/main
   push: {branches: ["master", "main"]}
-
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
+    environment: 
+      name: production
     permissions:
       contents: write
     steps:
       - uses: lowlighter/metrics@latest
         with:
-          # 你的 GitHub Token
           token: ${{ secrets.METRICS_TOKEN }}
-          
-          # 配置选项
-          user: ${{ github.repository_owner }}  # 自动获取用户名
-          template: classic
-          filename: github-metrics.svg  # 生成的文件名
-          config_timezone: Asia/Shanghai  # 时区设置
-          
-          # 基础模块（显示哪些部分）
-          base: header, activity, community, repositories, metadata
-          
-          # 插件配置（可选，根据需求添加）
-          plugin_isocalendar: yes  # 等距日历图（提交热力图）
-          plugin_languages: yes    # 编程语言统计
-          plugin_stars: yes        # Stars 统计
